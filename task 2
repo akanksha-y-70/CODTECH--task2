@@ -1,0 +1,80 @@
+
+#include <LiquidCrystal.h>
+#include "DHT.h"
+
+LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
+/*
+  * RS = 12
+  * RW = GND
+  * EN = 10
+  * D4 = 5
+  * D5 = 4
+  * D6 = 3
+  * D7 = 2 
+*/
+
+#define LM35 A9
+#define POT A5
+#define STEP_SIZE 5/1024
+#define DHTPIN 8
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  lcd.begin(16,2);
+  dht.begin();
+
+}
+
+void loop() {
+  float pot_val = analogRead(POT);
+  Serial.print("POT_ADC_Value: ");
+  Serial.println(pot_val);
+  float pot_volt = pot_val * STEP_SIZE;
+  Serial.print("POT Voltage: ");
+  Serial.println(pot_volt);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Pot Voltage: ");
+  lcd.setCursor(0,1);
+  lcd.print(pot_volt);
+  delay(1000);
+
+  float hum = dht.readHumidity();
+  float tem = dht.readTemperature();
+  Serial.print("Humidity: ");
+  Serial.println(hum);
+  Serial.print("Temperature:");
+  Serial.println(tem);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Temperature");
+  lcd.setCursor(0,1);
+  lcd.print(tem);
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Humidity");
+  lcd.setCursor(0,1);
+  lcd.print(hum);
+  delay(1000);
+  
+  // LM35 Temperature Sensor
+  float lm35_val = analogRead(LM35);// 0 to 1023
+  float lm35_volt = lm35_val * STEP_SIZE;
+  float lm35_tempC = (lm35_volt * 1000) / 10;
+  Serial.print("Temperature LM35: ");
+  Serial.println(lm35_tempC);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("LM35 Temp: ");
+  lcd.setCursor(0,1);
+  lcd.print(lm35_tempC);
+  delay(1000);
+
+
+
+}
+
