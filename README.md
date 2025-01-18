@@ -18,3 +18,4 @@ Description:
 Sensor collects temperature and humidity data.
 Arduino processes the data and displays it on an LCD.
 software: wokwi
+![Screenshot 2025-01-18 192448](https://github.com/user-attachments/assets/8a3ca23a-70d4-47da-8f1a-1202f1a6e57d)
